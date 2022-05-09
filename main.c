@@ -113,9 +113,8 @@ float perlin(float x, float y) {
     return (value);
 }
 
-void	noise(int x, int y, float *elevation) {
+float	noise(int x, int y) {
 	const float frequency = 2.0f;
-    const float wavelength = (float)LENGTH / frequency;
     const float redistribution = 4.0f;
     const int   octaves = 3;
 
@@ -125,11 +124,9 @@ void	noise(int x, int y, float *elevation) {
     ny = (float)y / HEIGHT - 0.5f;
     nx *= frequency;
     ny *= frequency;
-    // nx /= wavelength;
-    // ny /= wavelength;
     e = 0;
     amplitude_sum = 0;
-    for (int o = 1; o <= octaves; o++) {
+    for (int o = 1; o < octaves + 1; o++) {
         factor = o * 2;
         amplitude = 1 / factor;
         e += amplitude * perlin(nx * factor, ny * factor);
@@ -137,7 +134,7 @@ void	noise(int x, int y, float *elevation) {
     }
     if (amplitude_sum > 0)
         e /= amplitude_sum;
-    elevation[y * WIDTH + x] = e * redistribution;
+    return (e * redistribution);
 }
 
 int     main() {
@@ -145,7 +142,7 @@ int     main() {
 
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
-            noise(x, y, elevation);
+            elevation[y * WIDTH + x] = noise(x, y);
         }
     }
 
