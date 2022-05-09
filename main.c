@@ -137,23 +137,24 @@ float	noise(int x, int y) {
     return (e * redistribution);
 }
 
+void	print_noise(float e) {
+	get_biome(e);
+    // printf("[%.2f]", e);
+    printf("[]");
+    get_biome(-1);
+}
+
 int     main() {
     float   elevation[LENGTH];
+	int		pos;
 
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
-            elevation[y * WIDTH + x] = noise(x, y);
+			pos = y * WIDTH + x;
+            elevation[pos] = noise(x, y);
+			print_noise(elevation[pos]);
         }
-    }
-
-    for (int y = 0; y < HEIGHT; y++) {
-        for (int x = 0; x < WIDTH; x++) {
-            get_biome(elevation[y * WIDTH + x]);
-            // printf("[%.2f]", elevation[y * WIDTH + x]);
-            printf("[]");
-            get_biome(-1);
-        }
-        printf("\n");
+		printf("\n");
     }
     return (0);
 }
